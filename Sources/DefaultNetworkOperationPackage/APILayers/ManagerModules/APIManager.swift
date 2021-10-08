@@ -11,20 +11,16 @@ import Network
 public class APIManager: APIManagerInterface {
     
     public static let shared = APIManager()
-
+    
     // Mark: - Session -
     private let session: URLSession
-
+    
     // Mark: - JsonDecoder -
     private var jsonDecoder = JSONDecoder()
     
     public init() {
         let config = URLSessionConfiguration.default
-        if #available(macOS 10.13, *) {
-            config.waitsForConnectivity = true
-        } else {
-            // Fallback on earlier versions
-        }
+        config.waitsForConnectivity = true
         config.timeoutIntervalForResource = 300
         config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         self.session = URLSession(configuration: config)
