@@ -18,7 +18,11 @@ public class APIManager: APIManagerInterface {
     // Mark: - JsonDecoder -
     private var jsonDecoder = JSONDecoder()
     
-    public init() {
+    //Mark: - apiCallListener -
+    private var apiCallListener: ApiCallListener?
+    
+    public init(apiCallListener: ApiCallListener? = nil) {
+        self.apiCallListener = apiCallListener
         let config = URLSessionConfiguration.default
         config.waitsForConnectivity = true
         config.timeoutIntervalForResource = 300
@@ -27,6 +31,8 @@ public class APIManager: APIManagerInterface {
     }
     
     public func executeRequest<R>(urlRequest: URLRequest, completion: @escaping (Result<R, ErrorResponse>) -> Void) where R : Codable {
+        
+        apiCallListener?.onPreExecute()
         
         session.dataTask(with: urlRequest) { [weak self](data, urlResponse, error) in
             self?.dataTaskHandler(data, urlResponse, error, completion: completion)
@@ -38,7 +44,13 @@ public class APIManager: APIManagerInterface {
         
         if error != nil {
             // completion failure
-            print("makasi : \(String(describing: error))")
+            print("task handling error: \(String(describing: error))")
+            completion(.failure(ErrorResponse(
+                                    serverResponse:
+                                                ServerResponse(
+                                                    returnMessage: error!.localizedDescription,
+                                                    returnCode: error!._code),
+                                    apiConnectionErrorType: .serverError(error!._code))))
         }
         
         if let data = data {
@@ -46,14 +58,24 @@ public class APIManager: APIManagerInterface {
             do {
                 print(String(data: data, encoding: .utf8)!)
                 let dataDecoded = try jsonDecoder.decode(R.self, from: data)
-                print("data : \(data)")
+                print("data: \(data)")
                 completion(.success(dataDecoded))
             } catch let error {
                 // completion failure
-                print("error :\(error)")
+                let errorResponse = ErrorResponse(
+                        serverResponse: ServerResponse(
+                            returnMessage: error.localizedDescription,
+                            returnCode: error._code),
+                    apiConnectionErrorType: .dataDecodedFailed(error.localizedDescription))
+                print("decoding error:\(errorResponse)")
+
             }
         }
-        
+        apiCallListener?.onPostExecute()
+    }
+    
+    public func cancelRequest() {
+        session.invalidateAndCancel()
     }
     
     deinit {
