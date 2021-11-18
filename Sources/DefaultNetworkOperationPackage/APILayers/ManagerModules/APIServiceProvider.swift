@@ -25,7 +25,7 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
         self.data = data
     }
     
-    public func returnUrlRequest() throws -> URLRequest {
+    public func returnUrlRequest(headerType header: HTTPHeaderFields, postBody: Data?) throws -> URLRequest {
         
         var url = try baseUrl.asURL()
         
@@ -35,8 +35,8 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
         
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        request.headers = headers
-        
+        request.headers = getHeaders(header: header)
+        request.httpBody = postBody
         try configureEncoding(request: &request)
         
         return request
@@ -56,7 +56,13 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
     private var params: Parameters? {
         return data.asDictionary()
     }
-
+    
+    private func getHeaders(header: HTTPHeaderFields) -> HTTPHeaders {
+        var httpHeaders = HTTPHeaders()
+        httpHeaders.add(HTTPHeader(name: header.value.0, value: header.value.1))
+        return httpHeaders
+    }
+    
     private var headers: HTTPHeaders {
         var httpHeaders = HTTPHeaders()
         httpHeaders.add(HTTPHeader(name: HTTPHeaderFields.contentNoUtf8.value.0, value: HTTPHeaderFields.contentNoUtf8.value.1))
