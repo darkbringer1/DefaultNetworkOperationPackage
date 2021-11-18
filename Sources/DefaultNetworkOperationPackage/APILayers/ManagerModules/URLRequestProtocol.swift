@@ -8,5 +8,5 @@
 import Foundation
 
 protocol URLRequestProtocol {
-    func returnUrlRequest() throws -> URLRequest
+    func returnUrlRequest(headerType: HTTPHeaderFields) throws -> URLRequest
 }

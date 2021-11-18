@@ -7,15 +7,18 @@
 
 import Foundation
 
-enum HTTPHeaderFields {
+public enum HTTPHeaderFields {
     
+    case contentTypeUTF8
     case contentType
     
     var value: (String, String) {
         switch self {
-        case .contentType:
-            return ("Content-Type", "application/json; charset=utf-8")
+            case .contentType:
+                return ("Content-Type", "application/json; charset=utf-8")
+            case .contentTypeUTF8:
+                return ("Content-Type", "application/json; charset=utf-8")
         }
     }
-
+    
 }
