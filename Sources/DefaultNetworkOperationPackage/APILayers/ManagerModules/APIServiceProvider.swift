@@ -59,7 +59,7 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
 
     private var headers: HTTPHeaders {
         var httpHeaders = HTTPHeaders()
-        httpHeaders.add(HTTPHeader(name: HTTPHeaderFields.contentType.value.0, value: HTTPHeaderFields.contentType.value.1))
+        httpHeaders.add(HTTPHeader(name: HTTPHeaderFields.contentNoUtf8.value.0, value: HTTPHeaderFields.contentNoUtf8.value.1))
         return httpHeaders
     }
     
