@@ -15,7 +15,7 @@ public enum HTTPHeaderFields {
     var value: (String, String) {
         switch self {
             case .contentType:
-                return ("Content-Type", "application/json; charset=utf-8")
+                return ("Content-Type", "application/json")
             case .contentTypeUTF8:
                 return ("Content-Type", "application/json; charset=utf-8")
         }
