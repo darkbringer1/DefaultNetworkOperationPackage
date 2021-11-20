@@ -20,7 +20,7 @@ public enum HTTPHeaderFields {
             case .contentTypeUTF8:
                 return ("Content-Type", "application/json; charset=utf-8")
             case .authorization(let auth):
-                return (auth, "X-VP-Authorization")
+                return ("X-VP-Authorization", auth)
         }
     }
     
