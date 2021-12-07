@@ -12,6 +12,7 @@ public enum HTTPHeaderFields {
     case contentTypeUTF8
     case contentType
     case authorization(String)
+    case rapidApi(String)
     
     var value: (String, String) {
         switch self {
@@ -21,6 +22,8 @@ public enum HTTPHeaderFields {
                 return ("Content-Type", "application/json; charset=utf-8")
             case .authorization(let auth):
                 return ("X-VP-Authorization", auth)
+            case .rapidApi(let key):
+                return("x-rapidapi-key", key)
         }
     }
     
