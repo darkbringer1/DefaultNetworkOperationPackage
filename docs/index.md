@@ -16,7 +16,7 @@ DefaultNetworkOperationPackage is a Swift package that provides a simple interfa
 
 DefaultNetworkOperationPackage can be installed via Swift Package Manager. Simply add it as a dependency to your Xcode project and you can start using it right away.
 
-## Usage
+<!-- ## Usage
 
 To use DefaultNetworkOperationPackage, simply import it and create a `NetworkOperation` object with your desired URL and request configuration. Then, call the appropriate method for your desired request type.
 
@@ -42,7 +42,7 @@ networkOperation.post(
         }
     }
 )
-```
+``` -->
 
 ## Conclusion
 
