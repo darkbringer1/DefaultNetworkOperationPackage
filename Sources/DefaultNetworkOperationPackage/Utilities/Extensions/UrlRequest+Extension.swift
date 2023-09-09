@@ -2,7 +2,7 @@
 //  File.swift
 //  
 //
-//  Created by Erkut Bas on 1.10.2021.
+//  Created by Doğukaan Kılıçarslan on 8.10.2021.
 //
 
 import Foundation
@@ -15,3 +15,4 @@ extension URLRequest {
     }
     
 }
+

@@ -1,8 +1,8 @@
 //
 //  APIServiceProvider.swift
-//  CartCodeCase
+//  
 //
-//  Created by Erkut Bas on 21.10.2020.
+//  Created by Doğukaan Kılıçarslan on 21.10.2022.
 //
 
 import Foundation
@@ -25,7 +25,7 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
         self.data = data
     }
     
-    public func returnUrlRequest(headerType header: HTTPHeaderFields) throws -> URLRequest {
+    public func returnUrlRequest() throws -> URLRequest {
         
         var url = try baseUrl.asURL()
         
