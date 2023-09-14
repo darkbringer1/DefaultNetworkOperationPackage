@@ -7,6 +7,10 @@
 
 import Foundation
 
+public protocol ParameterEncoder {
+    func encode(urlRequest: inout URLRequest, with parameters: Parameters) throws
+}
+
 public struct URLParameterEncoder: ParameterEncoder {
     public func encode(urlRequest: inout URLRequest, with parameters: Parameters) throws {
         

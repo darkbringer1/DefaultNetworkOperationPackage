@@ -8,6 +8,7 @@
 import Foundation
 import Network
 
+
 public class APIManager: APIManagerInterface {
     public static let shared = APIManager()
     
@@ -26,6 +27,7 @@ public class APIManager: APIManagerInterface {
         config.waitsForConnectivity = true
         config.timeoutIntervalForResource = 300
         config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        config.protocolClasses = [MockURLProtocol.self]
         self.session = URLSession(configuration: config)
     }
     
@@ -59,6 +61,7 @@ public class APIManager: APIManagerInterface {
         if let data = data {
             do {
                 debugPrint(String(data: data, encoding: .utf8)!)
+                debugPrint(data.jsonString ?? "")
                 let dataDecoded = try jsonDecoder.decode(R.self, from: data)
                 debugPrint("data: \(data)")
                 completion(.success(dataDecoded))
@@ -125,4 +128,28 @@ public class APIManager: APIManagerInterface {
             apiConnectionErrorType: .serverError(statusCode))
         return errorResponse
     }
+}
+
+class MockURLProtocol: URLProtocol {
+    static var stubResponseData: Data?
+    static var stubError: Error?
+    
+    override class func canInit(with request: URLRequest) -> Bool {
+        return true
+    }
+    
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
+        return request
+    }
+    
+    override func startLoading() {
+        if let error = MockURLProtocol.stubError {
+            self.client?.urlProtocol(self, didFailWithError: error)
+        } else {
+            self.client?.urlProtocol(self, didLoad: MockURLProtocol.stubResponseData ?? Data())
+        }
+        self.client?.urlProtocolDidFinishLoading(self)
+    }
+    
+    override func stopLoading() {}
 }

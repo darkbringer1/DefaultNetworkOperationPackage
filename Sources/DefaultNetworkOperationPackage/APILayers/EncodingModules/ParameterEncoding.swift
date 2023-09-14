@@ -8,12 +8,10 @@
 import Foundation
 
 public enum ParameterEncoding {
-    
     case urlEncoding
     case jsonEncoding
     
     public func encode(urlRequest: inout URLRequest, parameters: Parameters?) throws {
-        
         do {
             switch self {
             case .urlEncoding:
@@ -25,7 +23,6 @@ public enum ParameterEncoding {
                 try JSONParameterEncoder().encode(urlRequest: &urlRequest, with: bodyParameters)
                 
             }
-            
         } catch {
             throw error
         }

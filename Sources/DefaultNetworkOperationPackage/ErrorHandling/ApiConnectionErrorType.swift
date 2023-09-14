@@ -12,4 +12,5 @@ public enum ApiConnectionErrorType {
     case connectionError(Int)
     case serverError(Int)
     case dataDecodedFailed(String)
+    case noData
 }

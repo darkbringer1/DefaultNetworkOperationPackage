@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol URLRequestProtocol {
+    func returnUrlRequest() throws -> URLRequest
+}
+
 open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
 
     private var method: HTTPMethod
@@ -35,7 +39,6 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
         
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-//        request.headers = getHeaders(header: header)
         
         try configureEncoding(request: &request)
         
@@ -56,12 +59,4 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
     private var params: Parameters? {
         return data.asDictionary()
     }
-    
-//    private func getHeaders(header: HTTPHeaderFields) -> HTTPHeaders {
-//        var httpHeaders = HTTPHeaders()
-//        httpHeaders.add(HTTPHeader(name: header.value.0, value: header.value.1))
-//        return httpHeaders
-//    }
-    
-    
 }
