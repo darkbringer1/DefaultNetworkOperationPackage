@@ -8,7 +8,7 @@
 import Foundation
 
 protocol URLRequestProtocol {
-    func returnUrlRequest() throws -> URLRequest
+    func returnUrlRequest(with headers: [HTTPHeaderFields]) throws -> URLRequest
 }
 
 open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
@@ -29,8 +29,7 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
         self.data = data
     }
     
-    public func returnUrlRequest() throws -> URLRequest {
-        
+    public func returnUrlRequest(with headers: [HTTPHeaderFields] = [.contentTypeUTF8]) throws -> URLRequest {
         var url = try baseUrl.asURL()
         
         if let path = path {
@@ -39,7 +38,7 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
         
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        
+        request.headers = getHeaders(headers: headers)
         try configureEncoding(request: &request)
         
         return request
@@ -58,5 +57,13 @@ open class ApiServiceProvider<T: Codable>: URLRequestProtocol {
     
     private var params: Parameters? {
         return data.asDictionary()
+    }
+    
+    private func getHeaders(headers: [HTTPHeaderFields]) -> HTTPHeaders {
+        var httpHeaders = HTTPHeaders()
+        for header in headers {
+            httpHeaders.add(HTTPHeader(name: header.value.0, value: header.value.1))
+        }
+        return httpHeaders
     }
 }

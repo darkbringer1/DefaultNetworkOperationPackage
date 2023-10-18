@@ -14,7 +14,8 @@ public enum HTTPHeaderFields {
     case authorization(String)
     case rapidApi(String)
     case gzip
-
+    case xApiKey(String)
+    
     var value: (String, String) {
         switch self {
         case .contentType:
@@ -27,7 +28,8 @@ public enum HTTPHeaderFields {
             return("x-rapidapi-key", key)
         case .gzip:
             return("Accept-Encoding", "gzip")
+        case .xApiKey(let key):
+            return ("X-Api-Key", key)
         }
     }
-    
 }
